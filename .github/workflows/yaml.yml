@@ -15,26 +15,34 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Reset e Fix Automatico
+      - name: Reset Totale Progetto
         run: |
-          # 1. Corregge il nome (Risolve Foto be62a021)
+          # 1. Crea un file pubspec.yaml nuovo di zecca con l'SDK giusto (Risolve Foto b6847786)
+          echo "name: umancapital" > pubspec.yaml
+          echo "description: A new Flutter project." >> pubspec.yaml
+          echo "publish_to: 'none'" >> pubspec.yaml
+          echo "version: 1.0.0+1" >> pubspec.yaml
+          echo "environment:" >> pubspec.yaml
+          echo "  sdk: '>=3.0.0 <4.0.0'" >> pubspec.yaml
+          echo "dependencies:" >> pubspec.yaml
+          echo "  flutter:" >> pubspec.yaml
+          echo "    sdk: flutter" >> pubspec.yaml
+          echo "dev_dependencies:" >> pubspec.yaml
+          echo "  flutter_test:" >> pubspec.yaml
+          echo "    sdk: flutter" >> pubspec.yaml
+          echo "flutter:" >> pubspec.yaml
+          echo "  uses-material-design: true" >> pubspec.yaml
+
+          # 2. Crea la cartella Android con il nome corretto (Risolve Foto be62a021)
           flutter create --project-name=umancapital . --platforms=android
-          
-          # 2. Inserisce l'SDK mancante nel pubspec (Risolve Foto b6847786)
-          # Questo comando scrive le righe necessarie senza che tu debba toccare il file
-          echo "environment:" > pubspec_fix.yaml
-          echo "  sdk: '>=3.0.0 <4.0.0'" >> pubspec_fix.yaml
-          cat pubspec.yaml >> pubspec_fix.yaml || true
-          mv pubspec_fix.yaml pubspec.yaml
           
           flutter pub get
 
-      - name: Build AAB
-        # Il trucco finale: ignoriamo gli errori pignoli del codice
+      - name: Build AAB Final
         run: flutter build appbundle --release --no-sound-null-safety
 
-      - name: Upload
+      - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: app-bundle
+          name: release-aab
           path: "**/build/app/outputs/bundle/release/app-release.aab"
