@@ -5,6 +5,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .  # Se i file sono sparsi, prova a mettere il nome della tua cartella qui
     steps:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
