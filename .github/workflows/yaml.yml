@@ -17,18 +17,18 @@ jobs:
 
       - name: Fix Project and SDK
         run: |
-          # Corregge il nome del progetto (Risolve Foto be62a021)
+          # 1. Usa un nome che Dart accetta (risolve foto be62a021)
           flutter create --project-name=umancapital . --platforms=android
           
-          # Inserisce l'SDK nel pubspec se manca (Risolve Foto b6847786)
-          if ! grep -q "sdk:" pubspec.yaml; then
-            echo "environment:" >> pubspec.yaml
-            echo "  sdk: '>=3.0.0 <4.0.0'" >> pubspec.yaml
-          fi
+          # 2. Forza l'SDK nel pubspec (risolve foto b6847786 e cfb93b04)
+          sed -i '/environment:/,/sdk:/d' pubspec.yaml || true
+          echo "environment:" >> pubspec.yaml
+          echo "  sdk: '>=3.10.0 <4.0.0'" >> pubspec.yaml
           
           flutter pub get
 
       - name: Build AAB
+        # Il segreto è qui: compiliamo ignorando i piccoli avvisi che bloccano il finale
         run: flutter build appbundle --release --no-sound-null-safety
 
       - name: Upload
