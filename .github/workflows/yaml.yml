@@ -17,11 +17,10 @@ jobs:
 
       - name: Fix and Prep Project
         run: |
-          # 1. Ricrea la cartella Android con un nome minuscolo valido
+          # 1. Ricrea la cartella Android con un nome minuscolo valido (Risolve Foto be62a021)
           flutter create --project-name=umancapital . --platforms=android
           
-          # 2. Risolviamo l'errore della versione SDK (Foto b6847786)
-          # Se il pubspec è vuoto o vecchio, questo comando forza una versione compatibile
+          # 2. Inserisce l'SDK mancante nel pubspec (Risolve Foto b6847786)
           sed -i '/environment:/,/sdk:/d' pubspec.yaml || true
           echo "environment:" >> pubspec.yaml
           echo "  sdk: '>=3.10.0 <4.0.0'" >> pubspec.yaml
@@ -35,4 +34,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: app-bundle
-          path: build/app/outputs/bundle/release/app-release.aab
+          path: "**/build/app/outputs/bundle/release/app-release.aab"
