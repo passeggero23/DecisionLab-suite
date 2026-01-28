@@ -1,4 +1,4 @@
-name: Build UmanCapital AAB
+name: build_umancapital
 on:
   push:
     branches: [ main ]
@@ -8,19 +8,25 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
       - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-          
-      - name: Ricrea cartella Android mancante
-        run: flutter create . --platforms=android
-        # Questo comando crea la cartella 'android' che ti manca direttamente sul server!
+
+      - name: Ricrea cartella Android
+        # HO CAMBIATO IL NOME QUI SOTTO: ora è "uman_capital" tutto minuscolo
+        run: flutter create --project-name=uman_capital . --platforms=android
 
       - name: Install dependencies
         run: flutter pub get
 
       - name: Build AAB
-        run: flutter build appbundle --release
+        run: flutter build appbundle --release --no-sound-null-safety
         
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
