@@ -15,15 +15,16 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Fix and Prep Project
+      - name: Fix Project and SDK
         run: |
-          # 1. Ricrea la cartella Android con un nome minuscolo valido (Risolve Foto be62a021)
+          # Corregge il nome del progetto (Risolve Foto be62a021)
           flutter create --project-name=umancapital . --platforms=android
           
-          # 2. Inserisce l'SDK mancante nel pubspec (Risolve Foto b6847786)
-          sed -i '/environment:/,/sdk:/d' pubspec.yaml || true
-          echo "environment:" >> pubspec.yaml
-          echo "  sdk: '>=3.10.0 <4.0.0'" >> pubspec.yaml
+          # Inserisce l'SDK nel pubspec se manca (Risolve Foto b6847786)
+          if ! grep -q "sdk:" pubspec.yaml; then
+            echo "environment:" >> pubspec.yaml
+            echo "  sdk: '>=3.0.0 <4.0.0'" >> pubspec.yaml
+          fi
           
           flutter pub get
 
