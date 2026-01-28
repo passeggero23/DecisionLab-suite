@@ -5,18 +5,25 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: .  # Se i file sono sparsi, prova a mettere il nome della tua cartella qui
     steps:
       - uses: actions/checkout@v4
+      
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17' # Java 17 è quello che serve per i nuovi Gradle
+
       - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
+          
       - name: Install dependencies
         run: flutter pub get
+
       - name: Build AAB
-        run: flutter build appbundle --release
+        run: flutter build appbundle --release --no-pub
+        
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
