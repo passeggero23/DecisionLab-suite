@@ -15,21 +15,25 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Fix and Get
+      - name: reset_totale_progetto
         run: |
-          # 1. Crea la cartella android che manca (TUTTO MINUSCOLO!)
+          # 1. Creiamo un pubspec.yaml da zero per evitare l'errore 65
+          echo "name: umancapital" > pubspec.yaml
+          echo "environment:" >> pubspec.yaml
+          echo "  sdk: '>=3.0.0 <4.0.0'" >> pubspec.yaml
+          echo "dependencies:" >> pubspec.yaml
+          echo "  flutter: { sdk: flutter }" >> pubspec.yaml
+          
+          # 2. Creiamo la struttura android pulita
           flutter create --project-name=umancapital . --platforms=android
-          # 2. Risolve l'errore della foto b6847786 (SDK missing)
-          echo "environment: {sdk: '>=3.0.0 <4.0.0'}" > pubspec_fix.yaml
-          cat pubspec.yaml >> pubspec_fix.yaml || true
-          mv pubspec_fix.yaml pubspec.yaml
+          
+          # 3. Scarichiamo le dipendenze
           flutter pub get
 
-      - name: Build AAB
-        # Aggiungiamo la protezione per il codice vecchio
+      - name: build_aab
         run: flutter build appbundle --release --no-sound-null-safety
 
-      - name: Upload
+      - name: upload_file
         uses: actions/upload-artifact@v4
         with:
           name: app-bundle
