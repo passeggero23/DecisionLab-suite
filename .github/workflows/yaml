@@ -1,22 +1,35 @@
-name: Build-UmanCapital
+name: Build-DecisionLab-Final
 on: [push, workflow_dispatch]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: subosito/flutter-action@v2
+      - name: 📥 Checkout totale
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive # Forza GitHub a entrare nelle cartelle con i puntini
+
+      - name: 🚀 Setup Flutter
+        uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-      - name: Ripara Progetto
+
+      - name: 🛠️ Trova e Costruisci
         run: |
+          # Cerchiamo dove si trova il file pubspec e spostiamoci lì
+          PUBSPEC_PATH=$(find . -name "pubspec.yaml" -not -path "*/.*" | head -n 1)
+          PROJECT_DIR=$(dirname "$PUBSPEC_PATH")
+          cd "$PROJECT_DIR"
+          
+          echo "Progetto trovato in: $PROJECT_DIR"
+          
           flutter pub get
           flutter create . --project-name umancapital --platforms android --overwrite
-      - name: Genera AAB
-        run: flutter build appbundle --release --no-tree-shake-icons
-      - name: Consegna File
+          flutter build appbundle --release --no-tree-shake-icons
+
+      - name: 📤 Consegna AAB
         uses: actions/upload-artifact@v4
         with:
-          name: UmanCapital-Bundle
-          path: build/app/outputs/bundle/release/*.aab
+          name: UmanCapital-Package
+          path: "**/build/app/outputs/bundle/release/*.aab"
