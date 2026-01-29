@@ -1,4 +1,6 @@
-name: umancapital
+Invalid workflow file
+
+(Line: 2, Col: 1): Unexpected value 'environment', (Line: 4, Col: 1): Unexpected value 'dependencies', (Line: 1, Col: 1): Required property is missing: jobs
 environment:
   sdk: '>=3.0.0 <4.0.0'
 dependencies:
