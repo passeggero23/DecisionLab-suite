@@ -15,9 +15,8 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: fix_progetto
+      - name: preparazione
         run: |
-          # Questo risolve i problemi di nomi e SDK che abbiamo visto prima
           flutter create --project-name=umancapital . --platforms=android --overwrite
           echo "environment: {sdk: '>=3.0.0 <4.0.0'}" > pubspec.yaml
           echo "dependencies: {flutter: {sdk: flutter}}" >> pubspec.yaml
@@ -30,4 +29,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: app-bundle
-          path: "**/build/app/outputs/bundle/release/app-release.aab"
+          path: "**/build/app/outputs/bundle/release/*.aab"
