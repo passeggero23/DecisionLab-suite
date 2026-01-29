@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
       title: 'UmanCapital',
       theme: ThemeData(primarySwatch: Colors.blue),
       home: Scaffold(
-        appBar: AppBar(title: const Text('UmanCapital')),
+        appBar: AppBar(title: const Text('umancapital')),
         body: const Center(
           child: Text(
             'Build in corso con successo!',
