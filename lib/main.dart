@@ -1,4 +1,4 @@
-name: Build UmanCapital AAB
+name: Build umancapital AAB
 on:
   push:
     branches: [ main ]
