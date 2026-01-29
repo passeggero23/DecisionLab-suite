@@ -15,26 +15,27 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: reset_totale_progetto
+      - name: Tabula Rasa
         run: |
-          # 1. Creiamo un pubspec.yaml da zero per evitare l'errore 65
-          echo "name: umancapital" > pubspec.yaml
-          echo "environment:" >> pubspec.yaml
-          echo "  sdk: '>=3.0.0 <4.0.0'" >> pubspec.yaml
-          echo "dependencies:" >> pubspec.yaml
-          echo "  flutter: { sdk: flutter }" >> pubspec.yaml
+          # 1. Pulizia profonda per evitare il conflitto del codice 64
+          rm -rf android
+          rm -f pubspec.yaml
           
-          # 2. Creiamo la struttura android pulita
+          # 2. Ricostruiamo tutto in modo che sia coerente
           flutter create --project-name=umancapital . --platforms=android
           
-          # 3. Scarichiamo le dipendenze
+          # 3. Aggiorniamo il pubspec appena creato con le istruzioni minime
+          echo "environment:" >> pubspec.yaml
+          echo "  sdk: '>=3.0.0 <4.0.0'" >> pubspec.yaml
+          
           flutter pub get
 
-      - name: build_aab
+      - name: Build AAB
+        # Se il 64 persiste, togliamo le opzioni extra per andare sul sicuro
         run: flutter build appbundle --release --no-sound-null-safety
 
-      - name: upload_file
+      - name: Upload
         uses: actions/upload-artifact@v4
         with:
           name: app-bundle
-          path: "**/build/app/outputs/bundle/release/app-release.aab"
+          path: "build/app/outputs/bundle/release/app-release.aab"
