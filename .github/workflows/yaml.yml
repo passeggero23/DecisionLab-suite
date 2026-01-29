@@ -15,34 +15,22 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Reset Totale Progetto
+      - name: Fix and Get
         run: |
-          # 1. Crea un file pubspec.yaml nuovo di zecca con l'SDK giusto (Risolve Foto b6847786)
-          echo "name: umancapital" > pubspec.yaml
-          echo "description: A new Flutter project." >> pubspec.yaml
-          echo "publish_to: 'none'" >> pubspec.yaml
-          echo "version: 1.0.0+1" >> pubspec.yaml
-          echo "environment:" >> pubspec.yaml
-          echo "  sdk: '>=3.0.0 <4.0.0'" >> pubspec.yaml
-          echo "dependencies:" >> pubspec.yaml
-          echo "  flutter:" >> pubspec.yaml
-          echo "    sdk: flutter" >> pubspec.yaml
-          echo "dev_dependencies:" >> pubspec.yaml
-          echo "  flutter_test:" >> pubspec.yaml
-          echo "    sdk: flutter" >> pubspec.yaml
-          echo "flutter:" >> pubspec.yaml
-          echo "  uses-material-design: true" >> pubspec.yaml
-
-          # 2. Crea la cartella Android con il nome corretto (Risolve Foto be62a021)
+          # 1. Crea la cartella android che manca (TUTTO MINUSCOLO!)
           flutter create --project-name=umancapital . --platforms=android
-          
+          # 2. Risolve l'errore della foto b6847786 (SDK missing)
+          echo "environment: {sdk: '>=3.0.0 <4.0.0'}" > pubspec_fix.yaml
+          cat pubspec.yaml >> pubspec_fix.yaml || true
+          mv pubspec_fix.yaml pubspec.yaml
           flutter pub get
 
-      - name: Build AAB Final
+      - name: Build AAB
+        # Aggiungiamo la protezione per il codice vecchio
         run: flutter build appbundle --release --no-sound-null-safety
 
-      - name: Upload Artifact
+      - name: Upload
         uses: actions/upload-artifact@v4
         with:
-          name: release-aab
+          name: app-bundle
           path: "**/build/app/outputs/bundle/release/app-release.aab"
