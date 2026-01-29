@@ -1,29 +1,20 @@
-name: Build umancapital AAB
-on:
-  push:
-    branches: [ main ]
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      
-      - uses: subosito/flutter-action@v2
-        with:
-          channel: 'stable'
-          
-      - name: Ricrea cartella Android mancante
-        run: flutter create . --platforms=android
-        # Questo comando crea la cartella 'android' che ti manca direttamente sul server!
+name: umancapital
+description: "Progetto UmanCapital Generato con successo"
+publish_to: 'none'
+version: 1.0.0+1
 
-      - name: Install dependencies
-        run: flutter pub get
+environment:
+  sdk: '>=3.0.0 <4.0.0'
 
-      - name: Build AAB
-        run: flutter build appbundle --release
-        
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-aab
-          path: "**/build/app/outputs/bundle/release/app-release.aab"
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
