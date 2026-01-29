@@ -15,23 +15,23 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Tabula Rasa
+      - name: Ripristino e Fix
         run: |
-          # 1. Pulizia profonda per evitare il conflitto del codice 64
+          # 1. Elimina solo la cartella Android corrotta, NON il pubspec
           rm -rf android
-          rm -f pubspec.yaml
           
-          # 2. Ricostruiamo tutto in modo che sia coerente
+          # 2. Ricrea solo la parte Android (senza distruggere il resto)
           flutter create --project-name=umancapital . --platforms=android
           
-          # 3. Aggiorniamo il pubspec appena creato con le istruzioni minime
-          echo "environment:" >> pubspec.yaml
-          echo "  sdk: '>=3.0.0 <4.0.0'" >> pubspec.yaml
+          # 3. Assicuriamoci che l'SDK sia presente nel TUO pubspec
+          # (Aggiunge la riga solo se manca, senza cancellare le tue dipendenze)
+          if ! grep -q "sdk:" pubspec.yaml; then
+            sed -i '1i environment:\n  sdk: ">=3.0.0 <4.0.0"' pubspec.yaml
+          fi
           
           flutter pub get
 
       - name: Build AAB
-        # Se il 64 persiste, togliamo le opzioni extra per andare sul sicuro
         run: flutter build appbundle --release --no-sound-null-safety
 
       - name: Upload
