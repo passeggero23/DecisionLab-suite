@@ -1,5 +1,29 @@
-- name: fix_progetto
+name: Build UmanCapital
+on: [push, workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Scarico Codice
+        uses: actions/checkout@v4
+
+      - name: 🚀 Installo Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: 🛠️ Creazione Progetto
+        # Guarda gli spazi socio, sono vitali!
         run: |
           flutter pub get
-          # Nota bene: ci sono gli SPAZI tra i comandi
-          flutter create . --project-name umancapital --platforms android --overwrite
+          flutter create . --project-name umancapital --platforms android
+
+      - name: 📦 Build AAB
+        run: flutter build appbundle --release --no-tree-shake-icons
+
+      - name: 📤 Scarica il file AAB
+        uses: actions/upload-artifact@v4
+        with:
+          name: UmanCapital-Release
+          path: build/app/outputs/bundle/release/*.aab
