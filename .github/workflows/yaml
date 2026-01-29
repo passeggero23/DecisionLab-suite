@@ -3,27 +3,28 @@ on: [push, workflow_dispatch]
 
 jobs:
   build:
+    # Usiamo Ubuntu (gratis e veloce su GitHub), non serve il runner Windows della foto!
     runs-on: ubuntu-latest
     steps:
-      - name: 📥 Scarico Codice
+      - name: 📥 Checkout
         uses: actions/checkout@v4
 
-      - name: 🚀 Installo Flutter
+      - name: 🚀 Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
 
-      - name: 🛠️ Creazione Progetto
-        # Guarda gli spazi socio, sono vitali!
+      - name: 🛠️ Fix Progetto
         run: |
           flutter pub get
-          flutter create . --project-name umancapital --platforms android
+          # SPAZI CORRETTI: tra 'name' e 'umancapital'
+          flutter create . --project-name umancapital --platforms android --overwrite
 
       - name: 📦 Build AAB
         run: flutter build appbundle --release --no-tree-shake-icons
 
-      - name: 📤 Scarica il file AAB
+      - name: 📤 Upload AAB
         uses: actions/upload-artifact@v4
         with:
-          name: UmanCapital-Release
+          name: UmanCapital-Bundle
           path: build/app/outputs/bundle/release/*.aab
