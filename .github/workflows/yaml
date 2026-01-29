@@ -1,29 +1,21 @@
-name: Build UmanCapital
+name: Build-UmanCapital
 on: [push, workflow_dispatch]
 
 jobs:
   build:
-    # Usiamo Ubuntu (gratis e veloce su GitHub), non serve il runner Windows della foto!
     runs-on: ubuntu-latest
     steps:
-      - name: 📥 Checkout
-        uses: actions/checkout@v4
-
-      - name: 🚀 Setup Flutter
-        uses: subosito/flutter-action@v2
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-
-      - name: 🛠️ Fix Progetto
+      - name: Ripara Progetto
         run: |
           flutter pub get
-          # SPAZI CORRETTI: tra 'name' e 'umancapital'
           flutter create . --project-name umancapital --platforms android --overwrite
-
-      - name: 📦 Build AAB
+      - name: Genera AAB
         run: flutter build appbundle --release --no-tree-shake-icons
-
-      - name: 📤 Upload AAB
+      - name: Consegna File
         uses: actions/upload-artifact@v4
         with:
           name: UmanCapital-Bundle
