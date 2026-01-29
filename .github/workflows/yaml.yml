@@ -15,14 +15,12 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: fix_e_ispezione
+      - name: fix_progetto
         run: |
-          # Vediamo i file presenti
-          ls -R
-          # Ricreiamo la cartella android
+          # Questo risolve i problemi di nomi e SDK che abbiamo visto prima
           flutter create --project-name=umancapital . --platforms=android --overwrite
-          # Inseriamo l'SDK nel pubspec
-          sed -i '1i environment:\n  sdk: ">=3.0.0 <4.0.0"' pubspec.yaml || true
+          echo "environment: {sdk: '>=3.0.0 <4.0.0'}" > pubspec.yaml
+          echo "dependencies: {flutter: {sdk: flutter}}" >> pubspec.yaml
           flutter pub get
 
       - name: build_aab
