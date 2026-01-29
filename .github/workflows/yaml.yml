@@ -1,41 +1,75 @@
-name: build_app
-on:
-  push:
-    branches: [ main ]
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: '17'
-      - uses: subosito/flutter-action@v2
-        with:
-          channel: 'stable'
-
-      - name: Ripristino e Fix
-        run: |
-          # 1. Elimina solo la cartella Android corrotta, NON il pubspec
-          rm -rf android
-          
-          # 2. Ricrea solo la parte Android (senza distruggere il resto)
-          flutter create --project-name=umancapital . --platforms=android
-          
-          # 3. Assicuriamoci che l'SDK sia presente nel TUO pubspec
-          # (Aggiunge la riga solo se manca, senza cancellare le tue dipendenze)
-          if ! grep -q "sdk:" pubspec.yaml; then
-            sed -i '1i environment:\n  sdk: ">=3.0.0 <4.0.0"' pubspec.yaml
-          fi
-          
-          flutter pub get
-
-      - name: Build AAB
-        run: flutter build appbundle --release --no-sound-null-safety
-
-      - name: Upload
-        uses: actions/upload-artifact@v4
-        with:
-          name: app-bundle
-          path: "build/app/outputs/bundle/release/app-release.aab"
+Skip to content
+passeggero23
+DecisionLab-suite
+Repository navigation
+Code
+Issues
+Pull requests
+Actions
+Projects
+Wiki
+Security
+Insights
+Settings
+build_app
+Update yaml.yml #23
+All jobs
+Run details
+Annotations
+1 error
+build
+failed 9 minutes ago in 1m 13s
+Search logs
+2s
+0s
+5s
+59s
+4s
+Run # 1. Elimina solo la cartella Android corrotta, NON il pubspec
+Recreating project ....
+  android/app/build.gradle.kts (created)
+  android/app/src/main/kotlin/com/example/umancapital/MainActivity.kt (created)
+  android/build.gradle.kts (created)
+  android/umancapital_android.iml (created)
+  .gitignore (created)
+  android/settings.gradle.kts (created)
+  android/gradle.properties (created)
+  android/.gitignore (created)
+  android/app/src/profile/AndroidManifest.xml (created)
+  android/app/src/debug/AndroidManifest.xml (created)
+  android/app/src/main/res/values/styles.xml (created)
+  android/app/src/main/res/drawable-v21/launch_background.xml (created)
+  android/app/src/main/res/mipmap-mdpi/ic_launcher.png (created)
+  android/app/src/main/res/mipmap-hdpi/ic_launcher.png (created)
+  android/app/src/main/res/mipmap-xhdpi/ic_launcher.png (created)
+  android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png (created)
+  android/app/src/main/res/values-night/styles.xml (created)
+  android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png (created)
+  android/app/src/main/res/drawable/launch_background.xml (created)
+  android/app/src/main/AndroidManifest.xml (created)
+  android/gradle/wrapper/gradle-wrapper.properties (created)
+  README.md (created)
+  umancapital.iml (created)
+  analysis_options.yaml (created)
+  .idea/modules.xml (created)
+  .idea/workspace.xml (created)
+  .idea/runConfigurations/main_dart.xml (created)
+  .idea/libraries/KotlinJavaRuntime.xml (created)
+0s
+0s
+0s
+0s
+0s
+0s
+Footer
+© 2026 GitHub, Inc.
+Footer navigation
+Terms
+Privacy
+Security
+Status
+Community
+Docs
+Contact
+Manage cookies
+Do not share my personal information
