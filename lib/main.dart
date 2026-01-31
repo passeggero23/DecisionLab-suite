@@ -1,24 +1,38 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const DecisionLabApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class DecisionLabApp extends StatelessWidget {
+  const DecisionLabApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'UmanCapital',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: Scaffold(
-        appBar: AppBar(title: const Text('umancapital')),
-        body: const Center(
-          child: Text(
-            'Build in corso con successo!',
-            style: TextStyle(fontSize: 20),
-          ),
+      title: 'DecisionLab Suite',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        useMaterial3: true,
+      ),
+      home: const HomePage(),
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('DecisionLab Suite'),
+      ),
+      body: const Center(
+        child: Text(
+          'Benvenuto in DecisionLab Suite',
+          style: TextStyle(fontSize: 20),
         ),
       ),
     );
