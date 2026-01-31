@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
-import 'pages/main_navigation.dart';
 
-void main() {
-  runApp(const DecisionLabApp());
-}
-
-class DecisionLabApp extends StatelessWidget {
-  const DecisionLabApp({super.key});
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'DecisionLab Suite',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-        useMaterial3: true,
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('DecisionLab Suite'),
       ),
-      home: const MainNavigation(),
+      body: const Center(
+        child: Text(
+          'Benvenuto in DecisionLab!',
+          style: TextStyle(fontSize: 22),
+        ),
+      ),
     );
   }
 }
