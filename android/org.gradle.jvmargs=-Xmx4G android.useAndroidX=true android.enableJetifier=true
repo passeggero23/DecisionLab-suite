@@ -1,0 +1,49 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+}
+
+android {
+    namespace "com.decisionlab.suite"
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.decisionlab.suite"
+        minSdk 21
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+
+        externalNativeBuild {
+            cmake {
+                cppFlags "-std=c++17"
+            }
+        }
+
+        ndk {
+            abiFilters "armeabi-v7a", "arm64-v8a"
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    externalNativeBuild {
+        cmake {
+            path "CMakeLists.txt"
+        }
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+}
