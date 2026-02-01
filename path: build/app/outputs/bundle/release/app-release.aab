@@ -1,7 +1,5 @@
 name: Build Flutter AAB
 
-
-
 on:
   push:
     branches: [ "main" ]
