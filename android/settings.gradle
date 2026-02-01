@@ -1,3 +1,5 @@
 rootProject.name = "DecisionLab-suite"
 
 include(":app")
+
+project(":app").projectDir = file("app")
