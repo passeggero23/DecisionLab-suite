@@ -1,8 +1,10 @@
-name: Build Flutter AAB
+name: Build Android App Bundle
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
   build:
@@ -12,19 +14,25 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Install Flutter
+      - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.22.0'
+          channel: stable
 
-      - name: Flutter pub get
+      - name: Clean Flutter
+        run: flutter clean
+
+      - name: Remove build directory
+        run: rm -rf build
+
+      - name: Install dependencies
         run: flutter pub get
 
-      - name: Build AAB
+      - name: Build appbundle
         run: flutter build appbundle --release
 
       - name: Upload AAB artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
-          name: app-release-aab
+          name: app-release
           path: build/app/outputs/bundle/release/app-release.aab
