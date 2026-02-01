@@ -1,2 +1,3 @@
-rootProject.name = "DecisionLabSuite"
-include ':app'
+rootProject.name = "DecisionLab-suite"
+
+include(":app")
