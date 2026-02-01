@@ -1,29 +1,34 @@
-buildscript {
-    ext.kotlin_version = '1.9.22'
-    repositories {
-        google()
-        mavenCentral()
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+android {
+    namespace "com.decisionlab.suite"
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.decisionlab.suite"
+        minSdk 21
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
     }
 
-    dependencies {
-        classpath 'com.android.tools.build:gradle:8.2.2'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    buildTypes {
+        release {
+            minifyEnabled false
+            shrinkResources false
+            signingConfig signingConfigs.debug
+        }
     }
 }
 
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
+flutter {
+    source "../.."
 }
 
-rootProject.buildDir = '../build'
-
-subprojects {
-    project.buildDir = "${rootProject.buildDir}/${project.name}"
-}
-
-tasks.register("clean", Delete) {
-    delete rootProject.buildDir
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 }
